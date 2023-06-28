@@ -1,6 +1,7 @@
+import SubscribeLeaveToggle from "@/components/SubscribeLeaveToggle";
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { format } from "date-fns";
+import { format, sub } from "date-fns";
 import { notFound } from "next/navigation";
 
 const Layout = async ({
@@ -77,6 +78,18 @@ const Layout = async ({
                   <div className="text-gray-900">{memberCount}</div>
                 </dd>
               </div>
+              {subreddit.creatorId === session?.user?.id ? (
+                <div className="flex justify-between gap-x-4 py-3">
+                  <p className="text-gray-500">You created this community</p>
+                </div>
+              ) : null}
+              {subreddit.creatorId !== session?.user.id ? (
+                <SubscribeLeaveToggle
+                  subredditName={subreddit.name}
+                  subredditId={subreddit.id}
+                  isSubscribed={isSubscribed}
+                />
+              ) : null}
             </dl>
           </div>
         </div>
