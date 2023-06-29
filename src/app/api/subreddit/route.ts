@@ -6,7 +6,7 @@ import { z } from "zod";
 export async function POST(req: Request) {
   try {
     const session = await getAuthSession();
-    // si existe la sesion
+    // si la session no existe respondemos con un 401
     if (!session?.user) return new Response("Unauthorized", { status: 401 });
     // obtenemos el body
     const body = await req.json();
