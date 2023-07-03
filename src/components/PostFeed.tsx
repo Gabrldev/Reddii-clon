@@ -2,7 +2,7 @@
 import { ExtendedPost } from "@/types/db";
 import { useIntersection } from "@mantine/hooks";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { INFINITE_SCROLLING_PAGINATION_RESULT } from "../app/config";
 import axios from "axios";
 import { useSession } from "next-auth/react";
@@ -26,7 +26,7 @@ function PostFeed({ initialPosts, subredditName }: Props) {
     ["infinite-query"],
     async ({ pageParam = 1 }) => {
       const query =
-        `/api/posts?limit${INFINITE_SCROLLING_PAGINATION_RESULT}&page=${pageParam}` +
+        `/api/posts?limit=${INFINITE_SCROLLING_PAGINATION_RESULT}&page=${pageParam}` +
         (!!subredditName ? `&subredditName=${subredditName}` : "");
 
       const { data } = await axios.get(query);
@@ -40,6 +40,12 @@ function PostFeed({ initialPosts, subredditName }: Props) {
       initialData: { pages: [initialPosts], pageParams: [1] },
     }
   );
+
+  useEffect(() => {
+    if (entry?.isIntersecting) {
+      fetchNextPage();
+    }
+  }, [entry, isFetchingNextPage]);
 
   const posts = data?.pages.flatMap((page) => page) ?? initialPosts;
 
