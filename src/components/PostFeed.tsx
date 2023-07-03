@@ -63,15 +63,20 @@ function PostFeed({ initialPosts, subredditName }: Props) {
                 post={post}
                 subredditName={post.subreddit.name}
                 commentAmt={post.comments.length}
+                currentVote={currentVote}
+                voteAmt={voteAmt}
               />
             </li>
           );
         } else {
           return (
             <Post
+              key={post.id}
               post={post}
               subredditName={post.subreddit.name}
               commentAmt={post.comments.length}
+              currentVote={currentVote}
+              voteAmt={voteAmt}
             />
           );
         }
