@@ -8,12 +8,12 @@ import { Button } from "./ui/Button";
 import { MessageSquare } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { boolean } from "zod";
 import { Label } from "./ui/Label";
 import { Textarea } from "./ui/Textarea";
 import { useMutation } from "@tanstack/react-query";
 import { CommentValidatorType } from "@/lib/validators/comment";
 import axios from "axios";
+import { toast } from "@/hooks/use-toast";
 
 type ExtendedComment = Comment & {
   votes: CommentVote[];
@@ -52,6 +52,23 @@ function PostComment({ comment, votesAmt, currentVote, postId }: Props) {
 
       return data;
     },
+
+    onError: () => {
+      return toast({
+        title: 'Something went wrong',
+        description: 'There was a problem posting your comment, please try again later.',
+        variant: 'destructive'
+      })
+    },
+    onSuccess: ()=>{
+      toast({
+        title: 'Comment posted',
+        description: 'Your comment has been posted.',
+        variant: 'default'
+      })
+      router.refresh()
+      setIsReplying(false)
+    }
   });
 
   return (
