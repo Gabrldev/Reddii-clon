@@ -7,13 +7,15 @@ import {
   CommandItem,
   CommandList,
 } from "./ui/Command";
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import axios from "axios";
 import { Prisma, Subreddit } from "@prisma/client";
 import { CommandEmpty } from "cmdk";
 import { useRouter } from "next/navigation";
 import { Users } from "lucide-react";
 import debounce from "lodash.debounce";
+import { useOnClickOutside } from "@/hooks/use-on-click-outside";
+import { set } from "date-fns";
 
 type Props = {};
 function SearchBar({}: Props) {
@@ -40,15 +42,25 @@ function SearchBar({}: Props) {
     enabled: false,
   });
 
-  const request = debounce(async ()=>{
-    await refetch()
-  })
+  const request = debounce(async () => {
+    await refetch();
+  }, 300);
 
   const debounceRequest = useCallback(() => {
-    request()
+    request();
   }, []);
+
+  const commandRef = useRef<HTMLDivElement>(null);
+
+  useOnClickOutside(commandRef,()=>{
+    setInput("");
+    
+  })
   return (
-    <Command className="relative rounded-lg border max-w-lg z-50 overflow-visible">
+    <Command
+      ref={commandRef}
+      className="relative rounded-lg border max-w-lg z-50 overflow-visible"
+    >
       <CommandInput
         value={input}
         onValueChange={(text) => {
