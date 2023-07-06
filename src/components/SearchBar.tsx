@@ -15,7 +15,6 @@ import { useRouter } from "next/navigation";
 import { Users } from "lucide-react";
 import debounce from "lodash.debounce";
 import { useOnClickOutside } from "@/hooks/use-on-click-outside";
-import { set } from "date-fns";
 
 type Props = {};
 function SearchBar({}: Props) {
@@ -27,7 +26,6 @@ function SearchBar({}: Props) {
     data: queryResults,
     refetch,
     isFetching,
-    isFetched,
   } = useQuery({
     queryFn: async () => {
       if (!input) return [];
@@ -54,7 +52,7 @@ function SearchBar({}: Props) {
 
   useOnClickOutside(commandRef,()=>{
     setInput("");
-    
+
   })
   return (
     <Command

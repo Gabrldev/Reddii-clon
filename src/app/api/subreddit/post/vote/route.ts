@@ -3,7 +3,6 @@ import { db } from "@/lib/db";
 import { redis } from "@/lib/resdis";
 import { PostVoteValidator } from "@/lib/validators/vote";
 import { CachedPost } from "@/types/redis";
-import { json } from "stream/consumers";
 import { z } from "zod";
 
 const CACHE_AFTER_UPVOTES = 1;
