@@ -57,7 +57,7 @@ function SearchBar({}: Props) {
   return (
     <Command
       ref={commandRef}
-      className="relative rounded-lg border max-w-lg z-50 overflow-visible"
+      className="relative rounded-lg border max-w-lg z-50 overflow-visible max-sm:w-60"
     >
       <CommandInput
         value={input}
